@@ -10,17 +10,17 @@ class User(models.Model):
 
 
 class Item(models.Model):
-    CAT = 'cat'
-    HEDGEHOG = 'hedgehog'
-    OTHER = 'other'
-    KINDS = (
-        (CAT, 'Cat'),
-        (HEDGEHOG, 'Hedgehog'),
-        (OTHER, 'other'),
-    )
+
+    class Kind(models.TextChoices):
+        CAT = 'cat', 'Cat'
+        HEDGEHOG = 'hedgehog', 'Hedgehog'
+        OTHER = 'other', 'Other'
+
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField(null=True, blank=True)
-    kind = models.CharField(max_length=32, choices=KINDS, default=OTHER)
+    kind = models.CharField(
+        max_length=32, choices=Kind.choices, default=Kind.OTHER
+    )
     deleted = models.BooleanField(default=False)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
